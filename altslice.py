@@ -45,6 +45,23 @@ class UniformSlicer(Slicer):
         return int((index - self._start) // (self._step))
 
 
+class OneBasedSlicer(UniformSlicer):
+
+    def __init__(self):
+        self._start = 1
+        self._step = 1
+
+    def _transform_index(self, x):
+        if not isinstance(x, int):
+            raise TypeError("indices must be integers not " + str(type(x)))
+        elif x == 0:
+            raise IndexError("0 not allowed in one based indexinng")
+        elif x < 0:
+            return x
+        else:
+            return super(OneBasedSlicer, self)._transform_index(x)
+
+
 class CategoricalSlicer(Slicer):
 
     def __init__(self, categories):
