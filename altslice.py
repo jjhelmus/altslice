@@ -1,16 +1,29 @@
+"""
+altslice : Index different
+
+Classes of alternative indexing of Python sequences.
+
+"""
 
 import abc
 import bisect
 
 
 class Slicer(metaclass=abc.ABCMeta):
+    """
+    Base class for all Slicers
+
+    To subclass, a _transform_index method must be defined.  This method
+    transforms values from the new index scheme to Python's normal indexing
+    scheme.
+    """
 
     @abc.abstractmethod
     def _transform_index(self, x):
         pass
 
     def __getitem__(self, x):
-        """ Return an int/slice. """
+        """ Return an int or slice in Python's natural indexing scheme. """
         if isinstance(x, slice):
             start = stop = step = None
             if x.start is not None:
@@ -23,10 +36,17 @@ class Slicer(metaclass=abc.ABCMeta):
             return self._transform_index(x)
 
     def __call__(self, *args):
+        """ stop or start, stop, [step]. """
         return self.__getitem__(slice(*args))
 
 
 class SequenceSlicer(Slicer):
+    """ Slice using indices of a asending sequence.
+
+    Create indices and slices based on an asending sequence of values.
+    Indexing and slicing is done to the left of the indices provided.
+
+    """
 
     def __init__(self, sequence):
         self._sequence = sequence
@@ -36,6 +56,13 @@ class SequenceSlicer(Slicer):
 
 
 class UniformSlicer(Slicer):
+    """ Slice using indices of an evenly spaced interval.
+
+    Create indices and slices based upon an given evenly spaced interval
+    starting at a given value.
+    Indexing and slicing is done to the left of the indices provided.
+
+    """
 
     def __init__(self, start, step):
         self._start = start
@@ -46,6 +73,11 @@ class UniformSlicer(Slicer):
 
 
 class OneBasedSlicer(UniformSlicer):
+    """ Slice using one-based indexing.
+
+    Create indices and slices where the first value is index 1.
+    None integer indices or slice components will raise a TypeError.
+    """
 
     def __init__(self):
         self._start = 1
@@ -55,7 +87,7 @@ class OneBasedSlicer(UniformSlicer):
         if not isinstance(x, int):
             raise TypeError("indices must be integers not " + str(type(x)))
         elif x == 0:
-            raise IndexError("0 not allowed in one based indexinng")
+            raise IndexError("0 not allowed in one-based indexing")
         elif x < 0:
             return x
         else:
@@ -63,6 +95,13 @@ class OneBasedSlicer(UniformSlicer):
 
 
 class CategoricalSlicer(Slicer):
+    """ Slice using given categories.
+
+    Create indices and slices using the provides sequence of categories.
+    Indices and slice components not found in the provide categories will raise
+    a ValueError.
+
+    """
 
     def __init__(self, categories):
         if hasattr(categories, 'index'):
