@@ -1,2 +1,7 @@
 .cache
 *.pyc
+
+# build artefacts
+build
+dist
+*.egg-info
