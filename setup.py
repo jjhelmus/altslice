@@ -6,7 +6,7 @@ LONG_DESCRIPTION = open('README.rst').read()
 
 setup(
     name='altslice',
-    version='0.1.0',
+    version='0.2.0.dev',
     description='Alternative slicing and indexing',
     long_description=LONG_DESCRIPTION,
     author='Jonathan J. Helmus',
