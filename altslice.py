@@ -7,7 +7,7 @@ Classes of alternative indexing of Python sequences.
 
 import bisect
 
-__version__ = "0.1.0.dev"
+__version__ = "0.1.0"
 
 
 class Slicer(object):

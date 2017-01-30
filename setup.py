@@ -6,11 +6,11 @@ LONG_DESCRIPTION = open('README.rst').read()
 
 setup(
     name='altslice',
-    version='0.1.0.dev',
+    version='0.1.0',
     description='Alternative slicing and indexing',
     long_description=LONG_DESCRIPTION,
     author='Jonathan J. Helmus',
-    author_email='jjhelmus at gmail.com',
+    author_email='jjhelmus@gmail.com',
     url='https://github.com/jjhelmus/altslice',
     license="BSD",
     py_modules=['altslice'],
