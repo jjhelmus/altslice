@@ -8,6 +8,8 @@ Classes of alternative indexing of Python sequences.
 import abc
 import bisect
 
+__version__ = "0.1.0.dev"
+
 
 class Slicer(metaclass=abc.ABCMeta):
     """
