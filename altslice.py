@@ -1,4 +1,32 @@
 
+import bisect
+
+
+class SequenceSlicer(object):
+
+    def __init__(self, sequence):
+        self._sequence = sequence
+
+    def _transform_index(self, index):
+        return bisect.bisect_left(self._sequence, index)
+
+    def __getitem__(self, x):
+        """ Return an int/slice. """
+        if isinstance(x, slice):
+            start = stop = step = None
+            if x.start is not None:
+                start = self._transform_index(x.start)
+            if x.stop is not None:
+                stop = self._transform_index(x.stop)
+            step = x.step  # step is not transformed
+            return slice(start, stop, step)
+        else:  # single element
+            return self._transform_index(x)
+
+    def __call__(self, *args):
+        return self.__getitem__(slice(*args))
+
+
 class UniformSlicer(object):
 
     def __init__(self, start, step):
