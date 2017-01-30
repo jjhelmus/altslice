@@ -11,4 +11,4 @@ install:
   - pip install pytest
   - python setup.py install
 
-script: pytest -v
+script: pytest
