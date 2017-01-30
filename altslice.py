@@ -5,13 +5,12 @@ Classes of alternative indexing of Python sequences.
 
 """
 
-import abc
 import bisect
 
 __version__ = "0.1.0.dev"
 
 
-class Slicer(metaclass=abc.ABCMeta):
+class Slicer(object):
     """
     Base class for all Slicers
 
@@ -20,9 +19,8 @@ class Slicer(metaclass=abc.ABCMeta):
     scheme.
     """
 
-    @abc.abstractmethod
     def _transform_index(self, x):
-        pass
+        raise NotImplementedError
 
     def __getitem__(self, x):
         """ Return an int or slice in Python's natural indexing scheme. """
